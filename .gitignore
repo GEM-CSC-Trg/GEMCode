@@ -12,3 +12,5 @@
 plots
 */test/.*
 */test/*.log
+.law/
+soft/
