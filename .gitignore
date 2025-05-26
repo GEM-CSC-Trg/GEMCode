@@ -10,5 +10,7 @@
 #*
 *#*
 plots
+data/
 */test/.*
 */test/*.log
+/soft

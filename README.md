@@ -1,44 +1,44 @@
 # GEMCode
 
 
-## Instruction to use GEMCode package for CMSSW_13_0_x
+## Instruction to use GEMCode within GEM-CSC-trg-dev environment
 
 ```
-cmsrel CMSSW_13_0_0_pre4
-cd CMSSW_13_0_0_pre4/src
-cmsenv
-git clone  https://github.com/gem-sw/GEMCode
-scram b -j 9
+git clone --recursive git@github.com:GEM-CSC-Trg/GEMCode.git
+cd GEMCode
+git submodule add git@github.com:GEM-CSC-Trg/GEM-CSC-trg-dev.git
+
 ```
+In this way, you have both the GEMCode repo and the relevant submodule.
 
 
 ## GEMCSCAnalyzer: simtrack based analyzer to analyze muon trigger MC efficiency
 ![GEMCSCAnalyzer scheme](https://github.com/gem-sw/GEMCode/blob/for-CMSSW_12_0_1_X/docs/GEMCSCAnalyzer.png?raw=true)
 
 The MC simluation:
-  - Firstly gen particles are generated either from collisions or from particle guns. 
-  - The charged particle (here we only care about muons) can genrate the simtrack when it flies through the detectors,  
-and meanwhile register the simhits in the detectors. The simtrack and simhits can be associated through track id. 
-  - Then simhits in detectors produce the digi in simulation.  
+  - Firstly gen particles are generated either from collisions or from particle guns.
+  - The charged particle (here we only care about muons) can genrate the simtrack when it flies through the detectors,
+and meanwhile register the simhits in the detectors. The simtrack and simhits can be associated through track id.
+  - Then simhits in detectors produce the digi in simulation.
   - The trigger emulator uses digis in the detectors to build trigger stubs,
-like anode local charged track(ALCT), cathode-LCT (CLCT) and LCT for CSC muon triggering. 
+like anode local charged track(ALCT), cathode-LCT (CLCT) and LCT for CSC muon triggering.
   - The next step is that track-finder builds muon track by collecting and using trigger stubs from different muons stations. EMTF emulator is the muon track-finder for endcap, OMTF
-is the  muon track-finder for overlap region (0.9<eta<1.1) and BMTF is for barrel region. 
+is the  muon track-finder for overlap region (0.9<eta<1.1) and BMTF is for barrel region.
   - Finally the muon track is sent to regional muon trigger and global muon trigger for muon triggering
-  - After LS3 upgrade, inner tracker would join the L1 trigger system and L1Track could also trigger on muons.  
-  
-GEMCSC analyzer is designed to analyze the muon trigger efficienies in different steps by matching simhits/digis/trigger stub/muon tracks to simtrack. Each part in the matching would initialize and fill one TTree, and match information for one simtrack would fill one entry in TTree.  
+  - After LS3 upgrade, inner tracker would join the L1 trigger system and L1Track could also trigger on muons.
+
+GEMCSC analyzer is designed to analyze the muon trigger efficienies in different steps by matching simhits/digis/trigger stub/muon tracks to simtrack. Each part in the matching would initialize and fill one TTree, and match information for one simtrack would fill one entry in TTree.
 
 ### GenParticle Matcher
 GenParticle matcher is to associate the gen particle with simtrack by comparing the pdgId and eta-phi position. The code is in GEMValidation/src/Matchers/GenParticleMatcher.cc
 
 ### SimHits Matchers
-The simHits matchers are under CMSSW module Validation/MuonHits/src. These matchers match the CSC/GEM/ME0/RPC/DT simhits to simtrack by track id. 
+The simHits matchers are under CMSSW module Validation/MuonHits/src. These matchers match the CSC/GEM/ME0/RPC/DT simhits to simtrack by track id.
 
 ### CSC/GEM/ME0/DT/RPCDigi Matchers
 The CSCDigi matcher is in Validation/MuonCSCDigis/src/CSCDigiMatcher.cc, GEMDigi matcher for GE11 and GE21 is in Validation/MuonGEMDigis/src/GEMDigiMatcher.cc and ME0/DT/RPCDigi matchers are under GEMValidation/src/Matchers.
 
-The digi matcher is associating the digi to simtrack via the simhits. The matching process is done by comparing the simhit position and digi position in each layer. 
+The digi matcher is associating the digi to simtrack via the simhits. The matching process is done by comparing the simhit position and digi position in each layer.
 
 ### CSC/ME0Stub Matchers
 CSCStub matcher is in Validation/MuonCSCDigis and ME0Stub matcher is NOT included yet in this package.  ME0 trigger stub emulation is not fully implemented yet.
@@ -62,15 +62,15 @@ GEMValidation/scripts/makePlots.py is used to plot efficiency and resolution etc
 ## MuonNtuplizer: rate study
 MuonNtuplizer could be used for trigger rate study by filling track information into TTree
 
-## Typical RelVal Samples 
+## Typical RelVal Samples
 | Data path     | Description |
 | ----------- | ----------- |
 | /RelValSingleMuPt10*/CMSSW_X_Y_Z_*/GEN-SIM-DIGI-RAW with X/Y/Z replaced by real CMSSW version number | fixed pt, 10/100/1000 GeV, PU0|
-| /RelValZpToMM_m6000_14TeV/CMSSW_X_Y_Z_*/GEN-SIM-DIGI-RAW with X/Y/Z replaced by real CMSSW version number | Zprime sample with mass = 6000 GeV | 
+| /RelValZpToMM_m6000_14TeV/CMSSW_X_Y_Z_*/GEN-SIM-DIGI-RAW with X/Y/Z replaced by real CMSSW version number | Zprime sample with mass = 6000 GeV |
 
- 
 
-## Deprecated instruction for old CMSSW Release 
+
+## Deprecated instruction for old CMSSW Release
 <details>
 <summary>CMSSW_12_6_x</summary>
 
@@ -88,7 +88,7 @@ cmsRun runGEMCSCAnalyzer_Phase2_cfg.py
 The one of 125X muon sample is /SingleMuon_Pt-0To200_Eta-1p4To3p1-gun/Phase2Fall22DRMiniAOD-PU200_125X_mcRun4_realistic_v2-v1/GEN-SIM-DIGI-RAW-MINIAOD
 and the full 125X sample compain is explained in the twiki: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideL1TPhase2Instructions#Phase2Fall22_Campaign_125X_sampl
 
-The samples can be queried from cms DAS website through: 
+The samples can be queried from cms DAS website through:
 https://cmsweb.cern.ch/das/request?input=dataset+dataset%3D%2F%2A%2FPhase2Fall22DRMiniAOD-PU200%2A125X%2A%2FGEN-SIM-DIGI-RAW-MINIAOD&instance=prod/global&idx=150&limit=50
 </details>
 
