@@ -2,7 +2,7 @@ apply_cmssw_customization_steps() {
     run_cmd git cms-init
     run_cmd git cms-addpkg Validation/MuonCSCDigis
     run_cmd mkdir -p GEMCode
-    run_cmd ln -s "$this_dir/GEMValidation" GEMCode/GEMValidation
+    run_cmd ln -s "$ANALYSIS_PATH/GEMValidation" GEMCode/GEMValidation
 }
 
 
